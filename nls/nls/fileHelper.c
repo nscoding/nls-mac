@@ -317,24 +317,24 @@ void printUsernameAndGroupMembersForFile(char *filename, struct stat file)
 		struct passwd* upwd = getpwuid(uid);
         
         /* get the information about the group. */
-		struct group* gpwd = getgrgid(gid);		
+		struct group* gpwd = getgrgid(gid);
 		
         /* make sure this user actually exists. */
 		if (!upwd)
         {
             printf("User %i does not exist.\n", uid);
-        }	
+        }
 		else
         {
             printf("file: %-45s Owner: %s \t Group id: %i || ",
                    filename, upwd->pw_name, getUserGroupForFile(filename));
         }
-
+        
 		/* make sure this group actually exists. */
         if (!gpwd)
         {
             printf("group %i does not exist.\n", gid);
-        }  
+        }
 		else
         {
 			char** p_member;
