@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		CD6F2F841788C72900C92113 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = CD6F2F831788C72900C92113 /* main.c */; };
-		CD6F2F8D1788C9A600C92113 /* fileHelper.c in Sources */ = {isa = PBXBuildFile; fileRef = CD6F2F8C1788C9A600C92113 /* fileHelper.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,6 +26,7 @@
 		CD6F2F801788C72900C92113 /* nls */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = nls; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD6F2F831788C72900C92113 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		CD6F2F8C1788C9A600C92113 /* fileHelper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fileHelper.c; sourceTree = "<group>"; };
+		CD6F2F8F1788D4F400C92113 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.md; path = ../../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +59,7 @@
 		CD6F2F821788C72900C92113 /* nls */ = {
 			isa = PBXGroup;
 			children = (
+				CD6F2F8F1788D4F400C92113 /* README.md */,
 				CD6F2F831788C72900C92113 /* main.c */,
 				CD6F2F8C1788C9A600C92113 /* fileHelper.c */,
 			);
@@ -117,7 +118,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD6F2F841788C72900C92113 /* main.c in Sources */,
-				CD6F2F8D1788C9A600C92113 /* fileHelper.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

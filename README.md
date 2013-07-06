@@ -1,7 +1,21 @@
 nls-mac
 =======
 
-Implementation of the "ls" in C 
+Implementation of the "ls" in C
+
+###Synopsis
+ 
+explore [ -hinsto ] [ pathname ]
+
+OPTIONS: 
+
+* -i, Display the name and the inode of a file or directory
+* -h, Display the hidden files also of a file or directory
+* -n, Display the permissions of the current user for a file or directory
+* -s, Display the access permissions of a file or directory
+* -t, Display the tolal size and the number of items of a file or directory
+* -o, Display the user and the group members of file or directory
+
 
 ###Contact
 

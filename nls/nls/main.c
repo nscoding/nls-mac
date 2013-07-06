@@ -24,12 +24,44 @@
 // THE SOFTWARE.
 
 
-
-#include <stdio.h>
 #include "fileHelper.c"
+#include <stdlib.h>					/* Declare data types such as char,int e.t.c. */
+#include <stdio.h>					/* Input / Output */
+#include <sys/types.h>				/* Defines data types such as ino_t,off_t e.t.c. */
+#include <sys/stat.h>				/* Defines the structure of the data returned from stat*/
+#include <dirent.h> 				/* required for directory functions */
+#include <strings.h>				/* required for strrchr and strcpy functions */
+#include <time.h>		  			/* required for time functions */
+#include <unistd.h>					/* required for R_OK W_OK X_OK functions */
+#include <grp.h>					/* required for Group Details */
+#include <pwd.h>					/* required for User Details */
 
 int main(int argc, const char * argv[])
 {
+    if (argc > 1)
+    {
+        if (strcmp (argv[1], "--help") == 0)
+        {
+            printf("SYNOPSIS \n"
+                   "explore [ -hinsto ] [ pathname ] \n\n"
+                   "OPTIONS: \n\n"
+                   "-i, --Inode\n"
+                   "Display the name and the inode of a file or directory\n"
+                   "-h, --Hidden files\n"
+                   "Display the hidden files also of a file or directory\n"
+                   "-n, --Current user permissions\n"
+                   "Display the permissions of the current user for a file or directory\n"
+                   "-s, --Access permissions\n"
+                   "Display the access permissions of a file or directory\n"
+                    "-t, --Total size and items\n"
+                    "Display the tolal size and the number of items of a file or directory\n"
+                    "-o, --User and Group\n"
+                    "Display the user and the group members of file or directory\n\n");
+
+                   exit(0);
+        }
+    }
+    
     return 0;
 }
 
