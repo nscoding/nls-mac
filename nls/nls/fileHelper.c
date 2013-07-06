@@ -44,14 +44,14 @@
 // Method to get the size of the file.
 int getFileSizeForPath(char *filename)
 {
-    //This structure will be used to query file status
+	//This structure will be used to query file status
 	struct stat file;
     
-    // validate if it can retrieve the size or not
+	// validate if it can retrieve the size or not
 	if (stat(filename, &file) != 0)
-    {
-        return (int)(file.st_size / 1024);
-    }
+	{
+		return (int)(file.st_size / 1024);
+	}
     
 	printf("Cannot retrive size for %s \n", filename);
 	return 0;
@@ -63,7 +63,7 @@ int getDirectorySizeForPath(char *pathname, int value)
 {
 	char newpath[1024];
 	
-    DIR *directory;
+	DIR *directory;
 	struct dirent *entry;
 	unsigned char done = 0;
 	struct stat file;
@@ -74,31 +74,31 @@ int getDirectorySizeForPath(char *pathname, int value)
 	{
 		entry = readdir(directory);
 		if (entry == 0)
-        {
-            done = 1;
-        }
+		{
+			done = 1;
+		}
 		else
-        {
+		{
 			if ((strncmp(entry->d_name, ".", 1) != 0))
-            {
+			{
 				sprintf(newpath,"%s/%s", pathname,entry->d_name);
 				stat(newpath,&file);
 				
-                if (S_ISREG(file.st_mode))
-                {
-                    value = value + getFileSizeForPath(newpath);
-                }
+				if (S_ISREG(file.st_mode))
+				{
+					value = value + getFileSizeForPath(newpath);
+				}
 				else if (S_ISDIR(file.st_mode))
-                {
-                    getDirectorySizeForPath(newpath, value);
-                }
+				{
+					getDirectorySizeForPath(newpath, value);
+				}
 			}
 		}
 	}
     
 	closedir(directory);
     
-    return value;
+	return value;
 }
 
 
@@ -112,11 +112,11 @@ time_t getModificationTimeForFile(char *filename)
 	struct stat file;
 	
 	if (stat(filename, &file) != 0)
-    {
-        return file.st_mtime;
-    }
+	{
+		return file.st_mtime;
+	}
 	
-    printf("Cannot retrieve time for %s \n", filename);
+	printf("Cannot retrieve time for %s \n", filename);
 	return 0;
 }
 
@@ -126,9 +126,9 @@ mode_t getModeForFile(char *filename)
 {
 	struct stat file;
 	if (stat(filename, &file) != 0)
-    {
-        return file.st_mode;
-    }
+	{
+		return file.st_mode;
+	}
     
 	printf("Cannot retrieve mode for %s \n", filename);
 	return 0;
@@ -139,12 +139,12 @@ mode_t getModeForFile(char *filename)
 uid_t getUserIDForFile(char *filename)
 {
 	struct stat file;
-    if (stat(filename, &file) != 0)
-    {
-        return file.st_uid;
-    }
+	if (stat(filename, &file) != 0)
+	{
+		return file.st_uid;
+	}
 	
-    printf("Cannot retrieve user id for %s \n", filename);
+	printf("Cannot retrieve user id for %s \n", filename);
 	return 0;
 }
 
@@ -154,11 +154,11 @@ gid_t getUserGroupForFile(char *filename)
 {
 	struct stat file;
 	if (stat(filename, &file) != 0)
-    {
-        return file.st_gid;
-    }
+	{
+		return file.st_gid;
+	}
 	
-    printf("Cannot retrieve group id for %s \n", filename);
+	printf("Cannot retrieve group id for %s \n", filename);
 	return 0;
 }
 
@@ -172,7 +172,7 @@ gid_t getUserGroupForFile(char *filename)
 void printInodeForFile(char *filename, struct stat file)
 {
 	if (stat(filename, &file) != 0)
-    {
+	{
 		printf("Inode no: %-10lli file :%s \t\n", file.st_ino, filename);
 	}
 }
@@ -181,89 +181,89 @@ void printInodeForFile(char *filename, struct stat file)
 // Method to print the permissions of the Owner , Group and Others.
 void printPermissionsForFile(char *filename, struct stat file)
 {
-    if (stat(filename, &file) != 0)
+	if (stat(filename, &file) != 0)
 	{
 		mode_t mode = getModeForFile(filename);
 		if ((mode & 0400) == 0)
-        {
-            printf("Owner cannot read ,");
-        }
+		{
+			printf("Owner cannot read ,");
+		}
 		else
-        {
-            printf("Owner can read ,");
-        }
+		{
+			printf("Owner can read ,");
+		}
 		
-        if ((mode & 0200) == 0)
-        {
-            printf(" cannot write ,");
-        }
+		if ((mode & 0200) == 0)
+		{
+			printf(" cannot write ,");
+		}
 		else
-        {
-            printf(" can write ,");
-        }
+		{
+			printf(" can write ,");
+		}
         
 		if ((mode & 0100) == 0)
-        {
-            printf(" cannot execute || %s\n", filename);
-        }
+		{
+			printf(" cannot execute || %s\n", filename);
+		}
 		else
-        {
-            printf(" can execute || %s\n", filename);
-        }
+		{
+			printf(" can execute || %s\n", filename);
+		}
 		
-        if ((mode & 0040) == 0)
-        {
-            printf("Group cannot read ,");
-        }
+		if ((mode & 0040) == 0)
+		{
+			printf("Group cannot read ,");
+		}
 		else
-        {
-            printf("Group can read ,");
-        }
+		{
+			printf("Group can read ,");
+		}
 		
-        if ((mode & 0020) == 0)
-        {
-            printf(" cannot write ,");
-        }
+		if ((mode & 0020) == 0)
+		{
+			printf(" cannot write ,");
+		}
 		else
-        {
-            printf(" can write ,");
-        }
+		{
+			printf(" can write ,");
+		}
 		
-        if ((mode & 0010) == 0)
-        {
-            printf(" cannot execute || %s\n", filename);
-        }
+		if ((mode & 0010) == 0)
+		{
+			printf(" cannot execute || %s\n", filename);
+		}
 		else
-        {
-            printf(" can execute || %s\n", filename);
-        }
+		{
+			printf(" can execute || %s\n", filename);
+		}
 		
-        if ((mode & 0004) == 0)
-        {
-            printf("Others cannot read ,");
-        }
+		if ((mode & 0004) == 0)
+		{
+			printf("Others cannot read ,");
+		}
 		else
-        {
-            printf("Others can read ,");
-        }
+		{
+			printf("Others can read ,");
+		}
 		
-        if ((mode & 0002) == 0)
-        {
-            printf(" cannot write ,");
-        }
+		if ((mode & 0002) == 0)
+		{
+			printf(" cannot write ,");
+		}
 		else
-        {
-            printf(" can write ,");
-        }
+		{
+			printf(" can write ,");
+		}
         
 		if ((mode & 0001) == 0)
-        {
-            printf(" cannot execute || %s\n", filename);
-        }
+		{
+			printf(" cannot execute || %s\n", filename);
+		}
 		else
-        {
-            printf(" can execute || %s\n", filename);
-        }
+		{
+			printf(" can execute || %s\n", filename);
+		}
 	}
 }
 
@@ -274,77 +274,77 @@ void printPermissionsOfCurrentUserForFile(char *filename, struct stat file)
 	int access (const char *filename, int how);
 	access(filename, file.st_mode);
     
-    if (stat(filename, &file) != 0)
+	if (stat(filename, &file) != 0)
 	{
 		if (access(filename,R_OK) == -1)
 		{
-            printf ("You can not read ||") ;
-        }
+			printf ("You can not read ||") ;
+		}
 		else
-        {
-            printf ("You can read ||") ;
-        }
+		{
+			printf ("You can read ||") ;
+		}
         
 		if (access(filename,W_OK) == -1)
 		{
-            printf (" You can not write ||");
-        }
+			printf (" You can not write ||");
+		}
 		else
-        {
-            printf (" You can write ||") ;
-        }
+		{
+			printf (" You can write ||") ;
+		}
         
 		if (access(filename,X_OK) == -1)
 		{
-            printf (" You can not execute || %s \n", filename);
-        }
+			printf (" You can not execute || %s \n", filename);
+		}
 		else
-        {
-            printf (" You can execute || %s \n", filename);
-        }
+		{
+			printf (" You can execute || %s \n", filename);
+		}
 	}
 }
 
 // Method to get the user name with and the group members.
 void printUsernameAndGroupMembersForFile(char *filename, struct stat file)
 {
-    if (stat(filename, &file) != 0)
+	if (stat(filename, &file) != 0)
 	{
 		uid_t uid = getUserIDForFile(filename);
 		gid_t gid = getUserGroupForFile(filename);
         
-        /* get the information about the user. */
+		/* get the information about the user. */
 		struct passwd* upwd = getpwuid(uid);
         
-        /* get the information about the group. */
+		/* get the information about the group. */
 		struct group* gpwd = getgrgid(gid);
 		
-        /* make sure this user actually exists. */
+		/* make sure this user actually exists. */
 		if (!upwd)
-        {
-            printf("User %i does not exist.\n", uid);
-        }
+		{
+			printf("User %i does not exist.\n", uid);
+		}
 		else
-        {
-            printf("file: %-45s Owner: %s \t Group id: %i || ",
-                   filename, upwd->pw_name, getUserGroupForFile(filename));
-        }
+		{
+			printf("file: %-45s Owner: %s \t Group id: %i || ",
+			filename, upwd->pw_name, getUserGroupForFile(filename));
+		}
         
 		/* make sure this group actually exists. */
-        if (!gpwd)
-        {
-            printf("group %i does not exist.\n", gid);
-        }
+		if (!gpwd)
+		{
+			printf("group %i does not exist.\n", gid);
+		}
 		else
-        {
+		{
 			char** p_member;
 			printf("Members of group: ");
 			for (p_member = gpwd->gr_mem; *p_member; p_member++)
-            {
-                printf(" (%s) ", *p_member);
-            }
+			{
+				printf(" (%s) ", *p_member);
+			}
 			
-            printf("\n");
+			printf("\n");
 		}
 	}
 }
