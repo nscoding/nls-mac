@@ -5,7 +5,7 @@ Implementation of the "ls" in C
 
 ###Synopsis
  
-explore [ -hinsto ] [ pathname ]
+nls [ -hinsto ] [ pathname ]
 
 OPTIONS: 
 
