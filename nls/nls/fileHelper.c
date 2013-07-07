@@ -127,7 +127,7 @@ mode_t getModeForFile(char *filename)
 
 // Method to get the user id of a file.
 uid_t getUserIDForFile(char *filename)
-{	
+{
 	struct stat file;
 	if (stat(filename, &file) == 0)
 	{

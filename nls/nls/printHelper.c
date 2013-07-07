@@ -17,20 +17,20 @@
 void printSynopsis()
 {
 	printf("SYNOPSIS \n"
-		"nls [ -hinsto ] [ pathname ] \n\n"
-		"OPTIONS: \n\n"
-		"-i, --Inode\n"
-		"Display the name and the inode of a file or directory\n"
-		"-h, --Hidden files\n"
-		"Display the hidden files also of a file or directory\n"
-		"-n, --Current user permissions\n"
-		"Display the permissions of the current user for a file or directory\n"
-		"-s, --Access permissions\n"
-		"Display the access permissions of a file or directory\n"
-		"-t, --Total size and items\n"
-		"Display the tolal size and the number of items of a file or directory\n"
-		"-o, --User and Group\n"
-		"Display the user and the group members of file or directory\n\n");
+           "nls [ -hinsto ] [ pathname ] \n\n"
+           "OPTIONS: \n\n"
+           "-i, --Inode\n"
+           "Display the name and the inode of a file or directory\n"
+           "-h, --Hidden files\n"
+           "Display the hidden files also of a file or directory\n"
+           "-n, --Current user permissions\n"
+           "Display the permissions of the current user for a file or directory\n"
+           "-s, --Access permissions\n"
+           "Display the access permissions of a file or directory\n"
+           "-t, --Total size and items\n"
+           "Display the tolal size and the number of items of a file or directory\n"
+           "-o, --User and Group\n"
+           "Display the user and the group members of file or directory\n\n");
 }
 
 
@@ -146,7 +146,7 @@ void printUsernameAndGroupMembersForFile(char *filename, struct stat file)
 		else
 		{
 			printf("%-45s Owner: %s \t Group id: %i || ",
-			filename, upwd->pw_name, getUserGroupForFile(filename));
+                   filename, upwd->pw_name, getUserGroupForFile(filename));
 		}
         
 		/* make sure this group actually exists. */
