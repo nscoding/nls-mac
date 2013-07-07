@@ -37,34 +37,18 @@ int main(int argc, const char * argv[])
     
 	if (argc > 1)
 	{
-		if ((strcmp (argv[1],"--help") == 0)||
-			(strcmp (argv[1],"-i") == 0)    ||
-            (strcmp (argv[1],"-h") == 0)    ||
-            (strcmp (argv[1],"-s") == 0)    ||
-            (strcmp (argv[1],"-t") == 0)    ||
-            (strcmp (argv[1],"-n") == 0)    ||
-            (strcmp (argv[1],"-o") == 0))
+        if ((strcmp(argv[1],"--help") == 0)||
+            (strcmp(argv[1],"-h") == 0)    ||
+            (strcmp(argv[1],"-i") == 0)    ||
+            (strcmp(argv[1],"-s") == 0)    ||
+            (strcmp(argv[1],"-t") == 0)    ||
+            (strcmp(argv[1],"-n") == 0)    ||
+            (strcmp(argv[1],"-o") == 0))
 		{
-            
-			if (strcmp (argv[1], "--help") == 0)
+			if (strcmp(argv[1], "--help") == 0)
 			{
-				printf("SYNOPSIS \n"
-                       "explore [ -hinsto ] [ pathname ] \n\n"
-                       "OPTIONS: \n\n"
-                       "-i, --Inode\n"
-                       "Display the name and the inode of a file or directory\n"
-                       "-h, --Hidden files\n"
-                       "Display the hidden files also of a file or directory\n"
-                       "-n, --Current user permissions\n"
-                       "Display the permissions of the current user for a file or directory\n"
-                       "-s, --Access permissions\n"
-                       "Display the access permissions of a file or directory\n"
-                       "-t, --Total size and items\n"
-                       "Display the tolal size and the number of items of a file or directory\n"
-                       "-o, --User and Group\n"
-                       "Display the user and the group members of file or directory\n\n");
-                
-				exit(0);
+                printSynopsis();
+                exit(0);
 			}
             
 			if (argc == 3)
@@ -77,7 +61,7 @@ int main(int argc, const char * argv[])
                 
 				if (status == -1)
 				{
-					printf("%s does not exist\n",argv[2]);
+					printf("%s does not exist\n", argv[2]);
 					exit(2);
 				}
 				else if (!S_ISDIR(st.st_mode))
@@ -125,7 +109,18 @@ int main(int argc, const char * argv[])
 				closedir(directory);
 			}
 		}
+        else
+        {
+            printf("nls: '%s' is not a nls command. See 'nsl --help", argv[1]);
+            exit(0);
+        }
+
 	}
+    else
+    {
+        printSynopsis();
+        exit(0);
+    }
     
 	return 0;
 }
