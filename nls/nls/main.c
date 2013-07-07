@@ -35,33 +35,135 @@
 #include <unistd.h>					/* required for R_OK W_OK X_OK functions */
 #include <grp.h>					/* required for Group Details */
 #include <pwd.h>					/* required for User Details */
+#include <stdbool.h>
+
+void printForOptionPathStat(char *option, char *path, struct stat st)
+{    
+    if (strcmp(option, "-h") == 0)
+    {
+        printFilesForPath(path);
+    }
+    else if (strcmp(option, "-i") == 0)
+    {
+        printInodeForFile(path, st);
+    }
+    else if (strcmp(option, "-s") == 0)
+    {
+        printPermissionsForFile(path, st);
+    }
+    else if (strcmp(option, "-n") == 0)
+    {
+        printPermissionsOfCurrentUserForFile(path, st);
+    }
+    else if (strcmp(option, "-t") == 0)
+    {
+        printSizeForFile(path, st);
+    }
+    else if (strcmp(option, "-o") == 0)
+    {
+        printUsernameAndGroupMembersForFile(path, st);
+    }
+}
+
 
 int main(int argc, const char * argv[])
 {
-    if (argc > 1)
+	DIR *directory;
+	int status;
+	struct stat st;
+    
+	if (argc > 1)
     {
-        if (strcmp (argv[1], "--help") == 0)
+		if ((strcmp (argv[1],"--help") == 0)||
+            (strcmp (argv[1],"-i") == 0)    ||
+            (strcmp (argv[1],"-h") == 0)    ||
+            (strcmp (argv[1],"-s") == 0)    ||
+            (strcmp (argv[1],"-t") == 0)    ||
+            (strcmp (argv[1],"-n") == 0)    ||
+            (strcmp (argv[1],"-o") == 0))
         {
-            printf("SYNOPSIS \n"
-                   "explore [ -hinsto ] [ pathname ] \n\n"
-                   "OPTIONS: \n\n"
-                   "-i, --Inode\n"
-                   "Display the name and the inode of a file or directory\n"
-                   "-h, --Hidden files\n"
-                   "Display the hidden files also of a file or directory\n"
-                   "-n, --Current user permissions\n"
-                   "Display the permissions of the current user for a file or directory\n"
-                   "-s, --Access permissions\n"
-                   "Display the access permissions of a file or directory\n"
-                    "-t, --Total size and items\n"
-                    "Display the tolal size and the number of items of a file or directory\n"
-                    "-o, --User and Group\n"
-                    "Display the user and the group members of file or directory\n\n");
+         
+            if (strcmp (argv[1], "--help") == 0)
+            {
+                printf("SYNOPSIS \n"
+                       "explore [ -hinsto ] [ pathname ] \n\n"
+                       "OPTIONS: \n\n"
+                       "-i, --Inode\n"
+                       "Display the name and the inode of a file or directory\n"
+                       "-h, --Hidden files\n"
+                       "Display the hidden files also of a file or directory\n"
+                       "-n, --Current user permissions\n"
+                       "Display the permissions of the current user for a file or directory\n"
+                       "-s, --Access permissions\n"
+                       "Display the access permissions of a file or directory\n"
+                       "-t, --Total size and items\n"
+                       "Display the tolal size and the number of items of a file or directory\n"
+                       "-o, --User and Group\n"
+                       "Display the user and the group members of file or directory\n\n");
+                
+                exit(0);
+            }
 
-                   exit(0);
+            if (argc == 3)
+            {
+                char *option = strdup(argv[1]);
+                char *path = strdup(argv[2]);
+
+				directory = opendir(path);
+				status = stat(path, &st);
+                
+				if (status == -1)
+                {
+                    printf("%s does not exist\n",argv[2]);
+                    exit(2);
+                }
+				else if (!S_ISDIR(st.st_mode))
+                {
+                    printForOptionPathStat(option, path, st);
+				}
+                else
+                {
+                    struct dirent *entry;
+                    unsigned char done = 0;
+                    struct stat st;
+                    int access (const char *filename, int how);
+                    char string[1024];
+
+                    while (!done)
+                    {
+                        entry = readdir(directory);
+                        if (entry != 0)
+                        {
+                            if ((strncmp(entry->d_name, ".",1) != 0) ||
+                                strcmp(option, "-h") == 0)
+                            {
+                                size_t size = strlen(path);
+                                bool hasSlash = (path[size - 1] == '/');
+                                if (hasSlash)
+                                {
+                                    sprintf(string, "%s%s", path, entry->d_name);
+                                }
+                                else
+                                {
+                                    sprintf(string, "%s/%s", path, entry->d_name);
+                                }
+                                
+                                stat(string, &st);
+                                printForOptionPathStat(option, string, st);
+                            }
+                        }
+                        else
+                        {
+                            done = 1;
+                        }
+                    }
+                }
+                
+                closedir(directory);
+			}
         }
     }
-    
+
     return 0;
 }
 

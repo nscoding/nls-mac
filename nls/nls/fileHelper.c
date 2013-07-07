@@ -48,7 +48,7 @@ int getFileSizeForPath(char *filename)
 	struct stat file;
     
 	// validate if it can retrieve the size or not
-	if (stat(filename, &file) != 0)
+	if (stat(filename, &file) == 0)
 	{
 		return (int)(file.st_size / 1024);
 	}
@@ -111,7 +111,7 @@ time_t getModificationTimeForFile(char *filename)
 {
 	struct stat file;
 	
-	if (stat(filename, &file) != 0)
+	if (stat(filename, &file) == 0)
 	{
 		return file.st_mtime;
 	}
@@ -125,7 +125,7 @@ time_t getModificationTimeForFile(char *filename)
 mode_t getModeForFile(char *filename)
 {
 	struct stat file;
-	if (stat(filename, &file) != 0)
+	if (stat(filename, &file) == 0)
 	{
 		return file.st_mode;
 	}
@@ -139,7 +139,7 @@ mode_t getModeForFile(char *filename)
 uid_t getUserIDForFile(char *filename)
 {
 	struct stat file;
-	if (stat(filename, &file) != 0)
+	if (stat(filename, &file) == 0)
 	{
 		return file.st_uid;
 	}
@@ -153,7 +153,7 @@ uid_t getUserIDForFile(char *filename)
 gid_t getUserGroupForFile(char *filename)
 {
 	struct stat file;
-	if (stat(filename, &file) != 0)
+	if (stat(filename, &file) == 0)
 	{
 		return file.st_gid;
 	}
@@ -167,13 +167,33 @@ gid_t getUserGroupForFile(char *filename)
 #pragma mark - Logging methods
 // ------------------------------------------------------------------------------------------
 
+// Method to get the size of the file.
+void printSizeForFile(char *filename, struct stat file)
+{
+	if (stat(filename, &file) == 0)
+    {
+        if (S_ISDIR(file.st_mode))
+        {
+            int value = 0;
+            int sizeofdir = getDirectorySizeForPath(filename, value);
+            printf("%-45s \t Size kb:%-15i \n", filename, sizeofdir);
+        }
+        else
+        {
+            int filesize = getFileSizeForPath(filename);
+            printf("%-45s \t Size kb:%-15i \n", filename, filesize);
+        }
+        
+    }
+}
+
 
 // Method to print the name and the st number of a file.
 void printInodeForFile(char *filename, struct stat file)
 {
-	if (stat(filename, &file) != 0)
+	if (stat(filename, &file) == 0)
 	{
-		printf("Inode no: %-10lli file :%s \t\n", file.st_ino, filename);
+		printf("%-10lli %s \t\n", file.st_ino, filename);
 	}
 }
 
@@ -181,89 +201,32 @@ void printInodeForFile(char *filename, struct stat file)
 // Method to print the permissions of the Owner , Group and Others.
 void printPermissionsForFile(char *filename, struct stat file)
 {
-	if (stat(filename, &file) != 0)
+	if (stat(filename, &file) == 0)
 	{
+        
 		mode_t mode = getModeForFile(filename);
-		if ((mode & 0400) == 0)
-		{
-			printf("Owner cannot read ,");
-		}
-		else
-		{
-			printf("Owner can read ,");
-		}
-		
-		if ((mode & 0200) == 0)
-		{
-			printf(" cannot write ,");
-		}
-		else
-		{
-			printf(" can write ,");
-		}
         
-		if ((mode & 0100) == 0)
-		{
-			printf(" cannot execute || %s\n", filename);
-		}
-		else
-		{
-			printf(" can execute || %s\n", filename);
-		}
-		
-		if ((mode & 0040) == 0)
-		{
-			printf("Group cannot read ,");
-		}
-		else
-		{
-			printf("Group can read ,");
-		}
-		
-		if ((mode & 0020) == 0)
-		{
-			printf(" cannot write ,");
-		}
-		else
-		{
-			printf(" can write ,");
-		}
-		
-		if ((mode & 0010) == 0)
-		{
-			printf(" cannot execute || %s\n", filename);
-		}
-		else
-		{
-			printf(" can execute || %s\n", filename);
-		}
-		
-		if ((mode & 0004) == 0)
-		{
-			printf("Others cannot read ,");
-		}
-		else
-		{
-			printf("Others can read ,");
-		}
-		
-		if ((mode & 0002) == 0)
-		{
-			printf(" cannot write ,");
-		}
-		else
-		{
-			printf(" can write ,");
-		}
+        printf("%s\n", filename);
+        printf("Owner ");
+
+        printf(((mode & 0400) == 0) ? "-" : "r");
+        printf(((mode & 0200) == 0) ? "-" : "w");
+        printf(((mode & 0100) == 0) ? "-" : "x");
+        printf("\n");
+
+        printf("Group ");
         
-		if ((mode & 0001) == 0)
-		{
-			printf(" cannot execute || %s\n", filename);
-		}
-		else
-		{
-			printf(" can execute || %s\n", filename);
-		}
+        printf(((mode & 0040) == 0) ? "-" : "r");
+        printf(((mode & 0020) == 0) ? "-" : "w");
+        printf(((mode & 0010) == 0) ? "-" : "x");
+        printf("\n");
+        
+
+        printf("Others ");
+        printf(((mode & 0004) == 0) ? "-" : "r");
+        printf(((mode & 0002) == 0) ? "-" : "w");
+        printf(((mode & 0001) == 0) ? "-" : "x");
+        printf("\n\n");
 	}
 }
 
@@ -274,41 +237,20 @@ void printPermissionsOfCurrentUserForFile(char *filename, struct stat file)
 	int access (const char *filename, int how);
 	access(filename, file.st_mode);
     
-	if (stat(filename, &file) != 0)
+	if (stat(filename, &file) == 0)
 	{
-		if (access(filename,R_OK) == -1)
-		{
-			printf ("You can not read ||") ;
-		}
-		else
-		{
-			printf ("You can read ||") ;
-		}
-        
-		if (access(filename,W_OK) == -1)
-		{
-			printf (" You can not write ||");
-		}
-		else
-		{
-			printf (" You can write ||") ;
-		}
-        
-		if (access(filename,X_OK) == -1)
-		{
-			printf (" You can not execute || %s \n", filename);
-		}
-		else
-		{
-			printf (" You can execute || %s \n", filename);
-		}
+        printf((access(filename, R_OK) == -1) ? "-" : "r");
+        printf((access(filename, W_OK) == -1) ? "-" : "w");
+        printf((access(filename, X_OK) == -1) ? "-" : "x");
+        printf(" -> %s\n", filename);
 	}
 }
+
 
 // Method to get the user name with and the group members.
 void printUsernameAndGroupMembersForFile(char *filename, struct stat file)
 {
-	if (stat(filename, &file) != 0)
+	if (stat(filename, &file) == 0)
 	{
 		uid_t uid = getUserIDForFile(filename);
 		gid_t gid = getUserGroupForFile(filename);
@@ -326,7 +268,7 @@ void printUsernameAndGroupMembersForFile(char *filename, struct stat file)
 		}
 		else
 		{
-			printf("file: %-45s Owner: %s \t Group id: %i || ",
+			printf("%-45s Owner: %s \t Group id: %i || ",
 			filename, upwd->pw_name, getUserGroupForFile(filename));
 		}
         
@@ -347,5 +289,16 @@ void printUsernameAndGroupMembersForFile(char *filename, struct stat file)
 			printf("\n");
 		}
 	}
+}
+
+
+// Method to print all the fine names including the hidden ones.
+void printFilesForPath(char *filename)
+{
+    struct stat file;
+	if (stat(filename, &file) == 0)
+    {
+        printf("%-45s \n",filename);
+    }
 }
 
