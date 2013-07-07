@@ -45,11 +45,11 @@ int main(int argc, const char * argv[])
             (strcmp(argv[1],"-o") == 0))
 		{
             // if is help print the synopsis of the app
-			if (strcmp(argv[1], "--help") == 0)
-			{
+            if (strcmp(argv[1], "--help") == 0)
+            {
                 printSynopsis();
                 exit(0);
-			}
+            }
             
             char *option = strdup(argv[1]);
             char *path;
