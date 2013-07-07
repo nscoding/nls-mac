@@ -28,6 +28,8 @@
 		CD6F2F8C1788C9A600C92113 /* fileHelper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fileHelper.c; sourceTree = "<group>"; };
 		CD6F2F8F1788D4F400C92113 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.md; path = ../../README.md; sourceTree = "<group>"; };
 		CD6F2F901788EA8500C92113 /* printHelper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = printHelper.c; sourceTree = "<group>"; };
+		CD6F2F92178984B000C92113 /* pathHelper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pathHelper.c; sourceTree = "<group>"; };
+		CD6F2F941789862E00C92113 /* includes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = includes.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,8 @@
 				CD6F2F831788C72900C92113 /* main.c */,
 				CD6F2F901788EA8500C92113 /* printHelper.c */,
 				CD6F2F8C1788C9A600C92113 /* fileHelper.c */,
+				CD6F2F92178984B000C92113 /* pathHelper.c */,
+				CD6F2F941789862E00C92113 /* includes.c */,
 			);
 			path = nls;
 			sourceTree = "<group>";

@@ -24,10 +24,7 @@
 // THE SOFTWARE.
 
 
-#include <stdbool.h>
-#include "fileHelper.c"
 #include "printHelper.c"
-
 
 int main(int argc, const char * argv[])
 {
@@ -37,6 +34,8 @@ int main(int argc, const char * argv[])
     
 	if (argc > 1)
 	{
+        // check the first argument
+        // if is any of the supported options
         if ((strcmp(argv[1],"--help") == 0)||
             (strcmp(argv[1],"-h") == 0)    ||
             (strcmp(argv[1],"-i") == 0)    ||
@@ -45,24 +44,37 @@ int main(int argc, const char * argv[])
             (strcmp(argv[1],"-n") == 0)    ||
             (strcmp(argv[1],"-o") == 0))
 		{
+            // if is help print the synopsis of the app
 			if (strcmp(argv[1], "--help") == 0)
 			{
                 printSynopsis();
                 exit(0);
 			}
             
-			if (argc == 3)
+            char *option = strdup(argv[1]);
+            char *path;
+            
+            if (argc == 3)
+            {
+                // nls [ -hinsto ] [ pathname ]
+                path = strdup(argv[2]);
+            }
+            else
+            {
+                // nls [ -hinsto ]
+                path = getWorkingDirectoryPath();
+            }
+            
+            directory = opendir(path);
+            status = stat(path, &st);
+            size_t size = strlen(path);
+
+            if (size > 0)
 			{
-				char *option = strdup(argv[1]);
-				char *path = strdup(argv[2]);
-                
-				directory = opendir(path);
-				status = stat(path, &st);
-                
 				if (status == -1)
 				{
-					printf("%s does not exist\n", argv[2]);
-					exit(2);
+					printf("%s does not exist\n", path);
+					exit(0);
 				}
 				else if (!S_ISDIR(st.st_mode))
 				{
@@ -71,22 +83,19 @@ int main(int argc, const char * argv[])
 				else
 				{
 					struct dirent *entry;
-					unsigned char done = 0;
 					struct stat st;
 					int access (const char *filename, int how);
 					char string[1024];
                     
-					while (!done)
+					while (true)
 					{
 						entry = readdir(directory);
 						if (entry != 0)
 						{
-							if ((strncmp(entry->d_name, ".",1) != 0) ||
+							if ((strncmp(entry->d_name, ".", 1) != 0) ||
 								strcmp(option, "-h") == 0)
 							{
-								size_t size = strlen(path);
-								bool hasSlash = (path[size - 1] == '/');
-								if (hasSlash)
+								if (pathEndsWithSlash(path))
 								{
 									sprintf(string, "%s%s", path, entry->d_name);
 								}
@@ -101,9 +110,10 @@ int main(int argc, const char * argv[])
 						}
 						else
 						{
-							done = 1;
+							break;
 						}
 					}
+                    
 				}
                 
 				closedir(directory);

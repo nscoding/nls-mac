@@ -24,17 +24,7 @@
 // THE SOFTWARE.
 
 
-#include <stdlib.h>					/* Declare data types such as char,int e.t.c. */
-#include <stdio.h>					/* Input / Output */
-#include <sys/types.h>				/* Defines data types such as ino_t,off_t e.t.c. */
-#include <sys/stat.h>				/* Defines the structure of the data returned from stat*/
-#include <dirent.h> 				/* required for directory functions */
-#include <strings.h>				/* required for strrchr and strcpy functions */
-#include <time.h>		  			/* required for time functions */
-#include <unistd.h>					/* required for R_OK W_OK X_OK functions */
-#include <grp.h>					/* required for Group Details */
-#include <pwd.h>					/* required for User Details */
-
+#include "pathHelper.c"
 
 
 // ------------------------------------------------------------------------------------------
@@ -53,7 +43,7 @@ int getFileSizeForPath(char *filename)
 		return (int)(file.st_size / 1024);
 	}
     
-	printf("Cannot retrive size for %s \n", filename);
+	printf("Cannot retrive size for %s \n", getFileNameForPath(filename));
 	return 0;
 }
 
@@ -116,7 +106,7 @@ time_t getModificationTimeForFile(char *filename)
 		return file.st_mtime;
 	}
 	
-	printf("Cannot retrieve time for %s \n", filename);
+	printf("Cannot retrieve time for %s \n", getFileNameForPath(filename));
 	return 0;
 }
 
@@ -130,7 +120,7 @@ mode_t getModeForFile(char *filename)
 		return file.st_mode;
 	}
     
-	printf("Cannot retrieve mode for %s \n", filename);
+	printf("Cannot retrieve mode for %s \n", getFileNameForPath(filename));
 	return 0;
 }
 
@@ -144,7 +134,7 @@ uid_t getUserIDForFile(char *filename)
 		return file.st_uid;
 	}
 	
-	printf("Cannot retrieve user id for %s \n", filename);
+	printf("Cannot retrieve user id for %s \n", getFileNameForPath(filename));
 	return 0;
 }
 
@@ -158,147 +148,8 @@ gid_t getUserGroupForFile(char *filename)
 		return file.st_gid;
 	}
 	
-	printf("Cannot retrieve group id for %s \n", filename);
+	printf("Cannot retrieve group id for %s \n", getFileNameForPath(filename));
 	return 0;
 }
 
-
-// ------------------------------------------------------------------------------------------
-#pragma mark - Logging methods
-// ------------------------------------------------------------------------------------------
-
-// Method to get the size of the file.
-void printSizeForFile(char *filename, struct stat file)
-{
-	if (stat(filename, &file) == 0)
-    {
-        if (S_ISDIR(file.st_mode))
-        {
-            int value = 0;
-            int sizeofdir = getDirectorySizeForPath(filename, value);
-            printf("%-45s \t Size kb:%-15i \n", filename, sizeofdir);
-        }
-        else
-        {
-            int filesize = getFileSizeForPath(filename);
-            printf("%-45s \t Size kb:%-15i \n", filename, filesize);
-        }
-        
-    }
-}
-
-
-// Method to print the name and the st number of a file.
-void printInodeForFile(char *filename, struct stat file)
-{
-	if (stat(filename, &file) == 0)
-	{
-		printf("%-10lli %s \t\n", file.st_ino, filename);
-	}
-}
-
-
-// Method to print the permissions of the Owner , Group and Others.
-void printPermissionsForFile(char *filename, struct stat file)
-{
-	if (stat(filename, &file) == 0)
-	{
-        
-		mode_t mode = getModeForFile(filename);
-        
-        printf("%s\n", filename);
-        printf("Owner ");
-
-        printf(((mode & 0400) == 0) ? "-" : "r");
-        printf(((mode & 0200) == 0) ? "-" : "w");
-        printf(((mode & 0100) == 0) ? "-" : "x");
-        printf("\n");
-
-        printf("Group ");
-        
-        printf(((mode & 0040) == 0) ? "-" : "r");
-        printf(((mode & 0020) == 0) ? "-" : "w");
-        printf(((mode & 0010) == 0) ? "-" : "x");
-        printf("\n");
-        
-
-        printf("Others ");
-        printf(((mode & 0004) == 0) ? "-" : "r");
-        printf(((mode & 0002) == 0) ? "-" : "w");
-        printf(((mode & 0001) == 0) ? "-" : "x");
-        printf("\n\n");
-	}
-}
-
-
-// Method to print the permissions of the current user.
-void printPermissionsOfCurrentUserForFile(char *filename, struct stat file)
-{
-	int access (const char *filename, int how);
-	access(filename, file.st_mode);
-    
-	if (stat(filename, &file) == 0)
-	{
-        printf((access(filename, R_OK) == -1) ? "-" : "r");
-        printf((access(filename, W_OK) == -1) ? "-" : "w");
-        printf((access(filename, X_OK) == -1) ? "-" : "x");
-        printf(" -> %s\n", filename);
-	}
-}
-
-
-// Method to get the user name with and the group members.
-void printUsernameAndGroupMembersForFile(char *filename, struct stat file)
-{
-	if (stat(filename, &file) == 0)
-	{
-		uid_t uid = getUserIDForFile(filename);
-		gid_t gid = getUserGroupForFile(filename);
-        
-		/* get the information about the user. */
-		struct passwd* upwd = getpwuid(uid);
-        
-		/* get the information about the group. */
-		struct group* gpwd = getgrgid(gid);
-		
-		/* make sure this user actually exists. */
-		if (!upwd)
-		{
-			printf("User %i does not exist.\n", uid);
-		}
-		else
-		{
-			printf("%-45s Owner: %s \t Group id: %i || ",
-			filename, upwd->pw_name, getUserGroupForFile(filename));
-		}
-        
-		/* make sure this group actually exists. */
-		if (!gpwd)
-		{
-			printf("group %i does not exist.\n", gid);
-		}
-		else
-		{
-			char** p_member;
-			printf("Members of group: ");
-			for (p_member = gpwd->gr_mem; *p_member; p_member++)
-			{
-				printf(" (%s) ", *p_member);
-			}
-			
-			printf("\n");
-		}
-	}
-}
-
-
-// Method to print all the fine names including the hidden ones.
-void printFilesForPath(char *filename)
-{
-    struct stat file;
-	if (stat(filename, &file) == 0)
-    {
-        printf("%-45s \n",filename);
-    }
-}
 
