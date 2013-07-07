@@ -16,34 +16,34 @@
 
 char *getFileNameForPath(char *path)
 {
-    return basename(path);
-    //return strrchr(path, '/');
+	return basename(path);
+	//return strrchr(path, '/');
 }
 
 bool pathEndsWithSlash(char *path)
 {
-    size_t size = strlen(path);
-    bool hasSlash = (path[size - 1] == '/');
+	size_t size = strlen(path);
+	bool hasSlash = (path[size - 1] == '/');
     
-    return hasSlash;
+	return hasSlash;
 }
 
 
 char *getWorkingDirectoryPath()
 {
-    char *path;
-    // nls [ -hinsto ]
-    long size;
-    char *buffer = NULL;
-    size = pathconf(".", _PC_PATH_MAX);
-    path = getcwd(buffer, (size_t)size);
+	char *path;
+	// nls [ -hinsto ]
+	long size;
+	char *buffer = NULL;
+	size = pathconf(".", _PC_PATH_MAX);
+	path = getcwd(buffer, (size_t)size);
     
-    if (path == NULL)
-    {
-        printf("Path could not be determined\n");
-        exit(0);
-    }
+	if (path == NULL)
+	{
+		printf("Path could not be determined\n");
+		exit(0);
+	}
     
-    return path;
+	return path;
 }
 

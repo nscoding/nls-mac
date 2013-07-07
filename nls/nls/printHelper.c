@@ -16,32 +16,32 @@
 
 void printSynopsis()
 {
-    printf("SYNOPSIS \n"
-           "nls [ -hinsto ] [ pathname ] \n\n"
-           "OPTIONS: \n\n"
-           "-i, --Inode\n"
-           "Display the name and the inode of a file or directory\n"
-           "-h, --Hidden files\n"
-           "Display the hidden files also of a file or directory\n"
-           "-n, --Current user permissions\n"
-           "Display the permissions of the current user for a file or directory\n"
-           "-s, --Access permissions\n"
-           "Display the access permissions of a file or directory\n"
-           "-t, --Total size and items\n"
-           "Display the tolal size and the number of items of a file or directory\n"
-           "-o, --User and Group\n"
-           "Display the user and the group members of file or directory\n\n");
+	printf("SYNOPSIS \n"
+		"nls [ -hinsto ] [ pathname ] \n\n"
+		"OPTIONS: \n\n"
+		"-i, --Inode\n"
+		"Display the name and the inode of a file or directory\n"
+		"-h, --Hidden files\n"
+		"Display the hidden files also of a file or directory\n"
+		"-n, --Current user permissions\n"
+		"Display the permissions of the current user for a file or directory\n"
+		"-s, --Access permissions\n"
+		"Display the access permissions of a file or directory\n"
+		"-t, --Total size and items\n"
+		"Display the tolal size and the number of items of a file or directory\n"
+		"-o, --User and Group\n"
+		"Display the user and the group members of file or directory\n\n");
 }
 
 
 // Method to print all the fine names including the hidden ones.
 void printFilesForPath(char *filename)
 {
-    struct stat file;
+	struct stat file;
 	if (stat(filename, &file) == 0)
-    {
-        printf("%-45s \n", getFileNameForPath(filename));
-    }
+	{
+		printf("%-45s \n", getFileNameForPath(filename));
+	}
 }
 
 
@@ -49,20 +49,20 @@ void printFilesForPath(char *filename)
 void printSizeForFile(char *filename, struct stat file)
 {
 	if (stat(filename, &file) == 0)
-    {
-        if (S_ISDIR(file.st_mode))
-        {
-            int value = 0;
-            int sizeofdir = getDirectorySizeForPath(filename, value);
-            printf("%-45s \t Size kb:%-15i \n", getFileNameForPath(filename), sizeofdir);
-        }
-        else
-        {
-            int filesize = getFileSizeForPath(filename);
-            printf("%-45s \t Size kb:%-15i \n", getFileNameForPath(filename), filesize);
-        }
+	{
+		if (S_ISDIR(file.st_mode))
+		{
+			int value = 0;
+			int sizeofdir = getDirectorySizeForPath(filename, value);
+			printf("%-45s \t Size kb:%-15i \n", getFileNameForPath(filename), sizeofdir);
+		}
+		else
+		{
+			int filesize = getFileSizeForPath(filename);
+			printf("%-45s \t Size kb:%-15i \n", getFileNameForPath(filename), filesize);
+		}
         
-    }
+	}
 }
 
 
@@ -81,29 +81,29 @@ void printPermissionsForFile(char *filename, struct stat file)
 {
 	if (stat(filename, &file) == 0)
 	{
-        mode_t mode = getModeForFile(filename);
+		mode_t mode = getModeForFile(filename);
         
-        printf("%s\n", getFileNameForPath(filename));
-        printf("Owner ");
+		printf("%s\n", getFileNameForPath(filename));
+		printf("Owner ");
         
-        printf(((mode & 0400) == 0) ? "-" : "r");
-        printf(((mode & 0200) == 0) ? "-" : "w");
-        printf(((mode & 0100) == 0) ? "-" : "x");
-        printf("\n");
+		printf(((mode & 0400) == 0) ? "-" : "r");
+		printf(((mode & 0200) == 0) ? "-" : "w");
+		printf(((mode & 0100) == 0) ? "-" : "x");
+		printf("\n");
         
-        printf("Group ");
+		printf("Group ");
         
-        printf(((mode & 0040) == 0) ? "-" : "r");
-        printf(((mode & 0020) == 0) ? "-" : "w");
-        printf(((mode & 0010) == 0) ? "-" : "x");
-        printf("\n");
+		printf(((mode & 0040) == 0) ? "-" : "r");
+		printf(((mode & 0020) == 0) ? "-" : "w");
+		printf(((mode & 0010) == 0) ? "-" : "x");
+		printf("\n");
         
         
-        printf("Others ");
-        printf(((mode & 0004) == 0) ? "-" : "r");
-        printf(((mode & 0002) == 0) ? "-" : "w");
-        printf(((mode & 0001) == 0) ? "-" : "x");
-        printf("\n\n");
+		printf("Others ");
+		printf(((mode & 0004) == 0) ? "-" : "r");
+		printf(((mode & 0002) == 0) ? "-" : "w");
+		printf(((mode & 0001) == 0) ? "-" : "x");
+		printf("\n\n");
 	}
 }
 
@@ -116,10 +116,10 @@ void printPermissionsOfCurrentUserForFile(char *filename, struct stat file)
     
 	if (stat(filename, &file) == 0)
 	{
-        printf((access(filename, R_OK) == -1) ? "-" : "r");
-        printf((access(filename, W_OK) == -1) ? "-" : "w");
-        printf((access(filename, X_OK) == -1) ? "-" : "x");
-        printf(" -> %s\n", getFileNameForPath(filename));
+		printf((access(filename, R_OK) == -1) ? "-" : "r");
+		printf((access(filename, W_OK) == -1) ? "-" : "w");
+		printf((access(filename, X_OK) == -1) ? "-" : "x");
+		printf(" -> %s\n", getFileNameForPath(filename));
 	}
 }
 
@@ -146,7 +146,7 @@ void printUsernameAndGroupMembersForFile(char *filename, struct stat file)
 		else
 		{
 			printf("%-45s Owner: %s \t Group id: %i || ",
-                   filename, upwd->pw_name, getUserGroupForFile(filename));
+			filename, upwd->pw_name, getUserGroupForFile(filename));
 		}
         
 		/* make sure this group actually exists. */
