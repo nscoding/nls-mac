@@ -68,7 +68,7 @@ int main(int argc, const char * argv[])
             directory = opendir(path);
             status = stat(path, &st);
             size_t size = strlen(path);
-
+            
             if (size > 0)
 			{
 				if (status == -1)
@@ -124,7 +124,7 @@ int main(int argc, const char * argv[])
             printf("nls: '%s' is not a nls command. See 'nsl --help", argv[1]);
             exit(0);
         }
-
+        
 	}
     else
     {

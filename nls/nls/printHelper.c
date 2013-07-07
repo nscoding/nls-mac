@@ -81,8 +81,7 @@ void printPermissionsForFile(char *filename, struct stat file)
 {
 	if (stat(filename, &file) == 0)
 	{
-        
-		mode_t mode = getModeForFile(filename);
+        mode_t mode = getModeForFile(filename);
         
         printf("%s\n", getFileNameForPath(filename));
         printf("Owner ");
