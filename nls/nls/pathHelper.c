@@ -40,8 +40,8 @@ char *getWorkingDirectoryPath()
     
 	if (path == NULL)
 	{
-		printf("Path could not be determined\n");
-		exit(0);
+        printf("Path could not be determined\n");
+        exit(0);
 	}
     
 	return path;

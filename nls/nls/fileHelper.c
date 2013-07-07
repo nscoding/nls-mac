@@ -40,7 +40,7 @@ int getFileSizeForPath(char *filename)
 	// validate if it can retrieve the size or not
 	if (stat(filename, &file) == 0)
 	{
-		return (int)(file.st_size / 1024);
+        return (int)(file.st_size / 1024);
 	}
     
 	printf("Cannot retrive size for %s \n", getFileNameForPath(filename));
@@ -62,28 +62,28 @@ int getDirectorySizeForPath(char *pathname, int value)
     
 	while (done != 1)
 	{
-		entry = readdir(directory);
-		if (entry == 0)
-		{
-			done = 1;
-		}
-		else
-		{
-			if ((strncmp(entry->d_name, ".", 1) != 0))
-			{
-				sprintf(newpath,"%s/%s", pathname,entry->d_name);
-				stat(newpath,&file);
-				
-				if (S_ISREG(file.st_mode))
-				{
-					value = value + getFileSizeForPath(newpath);
-				}
-				else if (S_ISDIR(file.st_mode))
-				{
-					getDirectorySizeForPath(newpath, value);
-				}
-			}
-		}
+        entry = readdir(directory);
+        if (entry == 0)
+        {
+            done = 1;
+        }
+        else
+        {
+            if ((strncmp(entry->d_name, ".", 1) != 0))
+            {
+                sprintf(newpath,"%s/%s", pathname,entry->d_name);
+                stat(newpath,&file);
+                
+                if (S_ISREG(file.st_mode))
+                {
+                    value = value + getFileSizeForPath(newpath);
+                }
+                else if (S_ISDIR(file.st_mode))
+                {
+                    getDirectorySizeForPath(newpath, value);
+                }
+            }
+        }
 	}
     
 	closedir(directory);
@@ -103,7 +103,7 @@ time_t getModificationTimeForFile(char *filename)
 	
 	if (stat(filename, &file) == 0)
 	{
-		return file.st_mtime;
+        return file.st_mtime;
 	}
 	
 	printf("Cannot retrieve time for %s \n", getFileNameForPath(filename));
@@ -117,7 +117,7 @@ mode_t getModeForFile(char *filename)
 	struct stat file;
 	if (stat(filename, &file) == 0)
 	{
-		return file.st_mode;
+        return file.st_mode;
 	}
     
 	printf("Cannot retrieve mode for %s \n", getFileNameForPath(filename));
@@ -131,7 +131,7 @@ uid_t getUserIDForFile(char *filename)
 	struct stat file;
 	if (stat(filename, &file) == 0)
 	{
-		return file.st_uid;
+        return file.st_uid;
 	}
 	
 	printf("Cannot retrieve user id for %s \n", getFileNameForPath(filename));
@@ -145,7 +145,7 @@ gid_t getUserGroupForFile(char *filename)
 	struct stat file;
 	if (stat(filename, &file) == 0)
 	{
-		return file.st_gid;
+        return file.st_gid;
 	}
 	
 	printf("Cannot retrieve group id for %s \n", getFileNameForPath(filename));

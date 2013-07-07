@@ -43,7 +43,7 @@ int main(int argc, const char * argv[])
             (strcmp(argv[1],"-t") == 0)    ||
             (strcmp(argv[1],"-n") == 0)    ||
             (strcmp(argv[1],"-o") == 0))
-		{
+        {
             // if is help print the synopsis of the app
             if (strcmp(argv[1], "--help") == 0)
             {
@@ -118,7 +118,7 @@ int main(int argc, const char * argv[])
                 
                 closedir(directory);
             }
-		}
+        }
         else
         {
             printf("nls: '%s' is not a nls command. See 'nsl --help", argv[1]);
