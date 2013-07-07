@@ -70,54 +70,54 @@ int main(int argc, const char * argv[])
             size_t size = strlen(path);
             
             if (size > 0)
-			{
-				if (status == -1)
-				{
-					printf("%s does not exist\n", path);
-					exit(0);
-				}
-				else if (!S_ISDIR(st.st_mode))
-				{
-					printForOptionPathStat(option, path, st);
-				}
-				else
-				{
-					struct dirent *entry;
-					struct stat st;
-					int access (const char *filename, int how);
-					char string[1024];
+            {
+                if (status == -1)
+                {
+                    printf("%s does not exist\n", path);
+                    exit(0);
+                }
+                else if (!S_ISDIR(st.st_mode))
+                {
+                    printForOptionPathStat(option, path, st);
+                }
+                else
+                {
+                    struct dirent *entry;
+                    struct stat st;
+                    int access (const char *filename, int how);
+                    char string[1024];
                     
-					while (true)
-					{
-						entry = readdir(directory);
-						if (entry != 0)
-						{
-							if ((strncmp(entry->d_name, ".", 1) != 0) ||
-								strcmp(option, "-h") == 0)
-							{
-								if (pathEndsWithSlash(path))
-								{
-									sprintf(string, "%s%s", path, entry->d_name);
-								}
-								else
-								{
-									sprintf(string, "%s/%s", path, entry->d_name);
-								}
+                    while (true)
+                    {
+                        entry = readdir(directory);
+                        if (entry != 0)
+                        {
+                            if ((strncmp(entry->d_name, ".", 1) != 0) ||
+                                strcmp(option, "-h") == 0)
+                            {
+                                if (pathEndsWithSlash(path))
+                                {
+                                    sprintf(string, "%s%s", path, entry->d_name);
+                                }
+                                else
+                                {
+                                    sprintf(string, "%s/%s", path, entry->d_name);
+                                }
                                 
-								stat(string, &st);
-								printForOptionPathStat(option, string, st);
-							}
-						}
-						else
-						{
-							break;
-						}
-					}
+                                stat(string, &st);
+                                printForOptionPathStat(option, string, st);
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
                     
-				}
+                }
                 
-				closedir(directory);
-			}
+                closedir(directory);
+            }
 		}
         else
         {
